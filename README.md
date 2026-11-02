@@ -109,3 +109,32 @@ obteniendo mediciones de tiempo y frecuencia.
 Se presenta una demostración experimental del funcionamiento de la caja musical implementada con el circuito NE555.
 
 [Ver video del prototipo](imagenes/funcionamiento_ne555.mp4)
+
+## Aplicación web de métodos numéricos
+
+Se desarrolló una aplicación web interactiva para analizar las mediciones experimentales de tiempo y frecuencia obtenidas de la caja musical con NE555.
+
+La aplicación permite cargar archivos Excel y utilizar tres métodos numéricos:
+
+- **Interpolación de Lagrange:** estimación de frecuencias en tiempos intermedios.
+- **Splines cúbicos:** representación continua de la frecuencia en función del tiempo.
+- **Método de bisección:** búsqueda del instante aproximado en el que se alcanza una frecuencia objetivo.
+
+### Acceso a la aplicación
+
+[**Abrir página web del proyecto**](https://diegodec.github.io/caja-musical-ne555/web/)
+
+## Documentación del proyecto
+
+- [Primer avance](documentacion/Primer_Avance_Caja_Musical.docx)
+- [Informe de frecuencias y métodos numéricos](documentacion/Proyecto_Frecuencia_Metodos_Numericos%20f.docx)
+
+## Evidencias experimentales
+
+- [Fotografía del prototipo](imagenes/prototipo_ne555.jpeg)
+- [Espectrograma de frecuencias](imagenes/espectrograma.jpeg)
+- [Video del funcionamiento](imagenes/funcionamiento_ne555.mp4)
+
+## Estado del proyecto
+
+El prototipo físico y la aplicación web han sido implementados. Se realizaron pruebas de funcionamiento de los tres métodos numéricos con las mediciones experimentales. La verificación matemática completa de los resultados queda sujeta a revisión.
