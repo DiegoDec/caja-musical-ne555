@@ -104,3 +104,8 @@ obteniendo mediciones de tiempo y frecuencia.
 
 ![Espectrograma](imagenes/espectrograma.jpeg)
 
+### Video del funcionamiento del prototipo
+
+Se presenta una demostración experimental del funcionamiento de la caja musical implementada con el circuito NE555.
+
+[Ver video del prototipo](imagenes/funcionamiento_ne555.mp4)
