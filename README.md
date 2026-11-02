@@ -84,3 +84,23 @@ La página incluye representaciones gráficas, ecuaciones y tablas de resultados
 - [ ] Incorporación y verificación de mediciones experimentales.
 - [ ] Validación de los resultados numéricos.
 - [ ] Integración final de la documentación.
+
+
+## Evidencias del prototipo experimental
+
+### Montaje del circuito NE555
+
+El prototipo de la caja musical fue implementado
+en una protoboard, integrando el circuito electrónico,
+la alimentación y los altavoces.
+
+![Prototipo NE555](imagenes/prototipo_ne555.jpeg)
+
+### Análisis de frecuencias
+
+Se realizó un análisis del sonido generado por
+la caja musical mediante un espectrograma,
+obteniendo mediciones de tiempo y frecuencia.
+
+![Espectrograma](imagenes/espectrograma.jpeg)
+
