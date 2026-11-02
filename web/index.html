@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caja Musical con NE555 | Métodos Numéricos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">PROYECTO ACADÉMICO</p>
+      <h1>Caja Musical con NE555</h1>
+      <p>Interpolación numérica y búsqueda de tiempos a partir de mediciones de frecuencia.</p>
+      <span class="tag">Métodos Numéricos</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h2>1. Cargar datos experimentales</h2>
+      <p class="muted">
+        Sube un archivo Excel (.xlsx o .xls) con una columna de tiempo
+        y otra de frecuencia. Los métodos utilizarán los mismos datos.
+      </p>
+
+      <div class="upload-row">
+        <input type="file" id="archivoExcel" accept=".xlsx,.xls,.csv">
+        <button id="cargarExcel" class="btn primary">Cargar archivo</button>
+      </div>
+      <p id="estadoArchivo" class="status" aria-live="polite">
+        Esperando un archivo Excel.
+      </p>
+
+      <div id="resumenDatos" class="summary-grid hidden">
+        <div class="summary-item">
+          <span>Puntos cargados</span>
+          <strong id="cantidadPuntos">0</strong>
+        </div>
+        <div class="summary-item">
+          <span>Tiempo mínimo</span>
+          <strong id="tiempoMinimo">—</strong>
+        </div>
+        <div class="summary-item">
+          <span>Tiempo máximo</span>
+          <strong id="tiempoMaximo">—</strong>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>N.º</th>
+              <th>Tiempo (x)</th>
+              <th>Frecuencia (y)</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoTabla">
+            <tr><td colspan="3" class="empty">Carga un archivo para ver los datos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Seleccionar método numérico</h2>
+      <p class="muted">Primero carga los datos. Después elige el método que deseas ejecutar.</p>
+      <div class="method-grid">
+        <button class="method-card" data-metodo="lagrange">
+          <span class="method-number">01</span>
+          <strong>Interpolación de Lagrange</strong>
+          <span>Polinomio interpolante y estimación de frecuencia.</span>
+        </button>
+        <button class="method-card" data-metodo="splines">
+          <span class="method-number">02</span>
+          <strong>Splines cúbicos</strong>
+          <span>Un polinomio cúbico para cada intervalo.</span>
+        </button>
+        <button class="method-card" data-metodo="biseccion">
+          <span class="method-number">03</span>
+          <strong>Método de bisección</strong>
+          <span>Buscar el tiempo correspondiente a una frecuencia objetivo.</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="panelLagrange" class="panel method-panel hidden">
+      <h2>3. Interpolación de Lagrange</h2>
+      <p class="muted">
+        Construye el polinomio con todos los puntos cargados. Con n puntos,
+        su grado máximo es n − 1.
+      </p>
+      <div class="control-row">
+        <label for="tiempoLagrange">Tiempo para estimar la frecuencia</label>
+        <input id="tiempoLagrange" type="number" step="any" placeholder="Ej. 1.25">
+        <button id="calcularLagrange" class="btn primary">Calcular</button>
+      </div>
+      <div id="resultadoLagrange" class="result-box"></div>
+      <h3>Polinomio de Lagrange en forma de factores</h3>
+      <div id="polinomioLagrange" class="formula-list"></div>
+      <h3>Gráfica de interpolación</h3>
+      <div class="chart-wrap"><canvas id="graficaLagrange"></canvas></div>
+    </section>
+
+    <section id="panelSplines" class="panel method-panel hidden">
+      <h2>4. Splines cúbicos</h2>
+      <p class="muted">
+        Se calcula un spline cúbico natural. Con n puntos se obtienen n − 1 tramos.
+        Cada tramo se aplica entre dos tiempos consecutivos.
+      </p>
+      <div class="control-row">
+        <label for="tiempoSpline">Tiempo para estimar la frecuencia</label>
+        <input id="tiempoSpline" type="number" step="any" placeholder="Ej. 1.25">
+        <button id="calcularSpline" class="btn primary">Calcular</button>
+      </div>
+      <div id="resultadoSpline" class="result-box"></div>
+      <h3>Polinomios por intervalo</h3>
+      <div id="polinomiosSpline" class="formula-list"></div>
+      <h3>Gráfica de splines</h3>
+      <div class="chart-wrap"><canvas id="graficaSpline"></canvas></div>
+    </section>
+
+    <section id="panelBiseccion" class="panel method-panel hidden">
+      <h2>5. Método de bisección</h2>
+      <p class="muted">
+        Ingresa una frecuencia objetivo y selecciona un intervalo de tiempo.
+        Se busca una raíz de g(t) = f(t) − frecuencia objetivo.
+        El intervalo debe encerrar una raíz: g(a) y g(b) deben tener signos opuestos
+        o uno de los extremos debe ser raíz.
+      </p>
+      <div class="control-row">
+        <label for="frecuenciaObjetivo">Frecuencia objetivo</label>
+        <input id="frecuenciaObjetivo" type="number" step="any" placeholder="Ej. 500">
+      </div>
+      <div class="control-row">
+        <label for="intervaloBiseccion">Intervalo de tiempo</label>
+        <select id="intervaloBiseccion" disabled>
+          <option value="">Carga primero los datos</option>
+        </select>
+      </div>
+      <div class="control-row">
+        <label for="toleranciaBiseccion">Tolerancia</label>
+        <input id="toleranciaBiseccion" type="number" min="0.000000001" step="any" value="0.0001">
+        <button id="calcularBiseccion" class="btn primary">Buscar tiempo</button>
+      </div>
+      <div id="resultadoBiseccion" class="result-box"></div>
+      <h3>Gráfica de la función y la frecuencia objetivo</h3>
+      <div class="chart-wrap"><canvas id="graficaBiseccion"></canvas></div>
+      <h3>Tabla de iteraciones</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Iteración</th><th>a</th><th>b</th><th>c</th>
+              <th>g(c)</th><th>Error (b − a)/2</th>
+            </tr>
+          </thead>
+          <tbody id="tablaIteraciones">
+            <tr><td colspan="6" class="empty">Aún no se ha ejecutado bisección.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel project-info">
+      <h2>Datos del proyecto</h2>
+      <p><strong>Curso:</strong> Métodos Numéricos</p>
+      <p><strong>Docente:</strong> JOSUE MIRANDA</p>
+      <p><strong>Integrantes:</strong></p>
+      <ul>
+        <li>Estrada Olano Diego Ramiro — 25190162</li>
+        <li>Juarez Poccori Jordy Slayter — 25190171</li>
+        <li>Curi Cule, Maria Fernanda — 25190014</li>
+        <li>Ascue Rivas Jorge Luis — 25190145</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    Proyecto académico · Caja Musical con NE555
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
